@@ -1,0 +1,90 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-app">
+  <template>
+    <style include="shared-styles">
+      :host {
+        --app-primary-color: #4285f4;
+        --app-secondary-color: black;
+
+        display: block;
+      }
+    </style>
+
+    <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
+    </app-location>
+
+    <app-route route="{{route}}" pattern="[[rootPath]]:item" data="{{routeData}}" tail="{{subroute}}">
+    </app-route>
+    <!-- Main content -->
+    <div class="container" id="checkout">
+
+      <div id="shipping">
+
+        <div class="card wiz">
+          <div on-click="_deleteItem" class="close">X</div>
+          <h3>{{cartItem.name}}</h3>
+          Item Index: {{item}}
+          <br/> Price: {{cartItem.price}}
+        </div>
+        <form class="card wiz">
+          <paper-input label="First Name" autocomplete="given-name" value="{{cartItem.shippingAddress.firstName}}"></paper-input>
+          <paper-input label="Last Name" autocomplete="family-name" value="{{cartItem.shippingAddress.lastName}}"></paper-input>
+          <paper-input label="Delivery Address" autocomplete="address-line1" value="{{cartItem.shippingAddress.streetAddress1}}"></paper-input>
+          <paper-input label="Additional Address" autocomplete="address-line2" value="{{cartItem.shippingAddress.streetAddress2}}"></paper-input>
+          <paper-input label="City" autocomplete="locality" value="{{cartItem.shippingAddress.cityName}}"></paper-input>
+          <paper-input label="State" autocomplete="region" value="{{cartItem.shippingAddress.state}}"></paper-input>
+          <paper-input label="ZIP" autocomplete="postal-code" value="{{cartItem.shippingAddress.zipCode}}"></paper-input>
+          <paper-input label="Number" autocomplete="tel" type="tel" value="{{cartItem.shippingAddress.recipientNumber}}"></paper-input>
+          <paper-textarea label="Gift Message" value="{{cartItem.giftMessage}}"></paper-textarea>
+          <a on-click="_nextItem">
+            <paper-button raised>NEXT</paper-button>
+          </a>
+        </form>
+      </div>
+      <div id="review" hidden>
+        <template is="dom-repeat" items="{{cart}}">
+          <div class="card wiz">
+            <div on-click="_deleteReviewItem" indx="{{index}}" class="close">X</div>
+            <div>{{item.name}}</div>
+            <div>{{item.price}}</div>
+            <hr>
+            <div>
+              <b>{{item.shippingAddress.firstName}} {{item.shippingAddress.lastName}}</b>
+            </div>
+            <div>{{item.shippingAddress.streetAddress1}} {{item.shippingAddress.streetAddress2}}</div>
+            <div>{{item.shippingAddress.cityName}} {{item.shippingAddress.state}} {{item.shippingAddress.zipCode}} {{item.shippingAddress.country}}</div>
+          </div>
+        </template>
+        <paper-button id="buyButton" raised>Checkout</paper-button>
+      </div>
+    </div>
+  </template>
+
+  <script src="./js/my-app.js"></script>
+</dom-module>
